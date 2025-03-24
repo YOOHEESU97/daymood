@@ -1,39 +1,43 @@
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Button from "./components/Button";
-import Input from "./components/Input";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import New from "./pages/New";
+import Diary from "./pages/Diary";
+import Edit from "./pages/Edit";
+import Notfound from "./pages/Notfound";
+import { useReducer } from "react";
 
-import { useState } from "react";
-
+const mockData = [
+  {
+    id: 1,
+    createdDate: new Date().getTime(),
+    emotionId: 1,
+    content: "1번 일기 내용",
+  },
+  {
+    id: 2,
+    createdDate: new Date().getTime(),
+    emotionId: 2,
+    content: "2번 일기 내용",
+  },
+];
+function reducer(state, action) {
+  return state;
+}
+// 1. "/" : 모든 일기를 조회하는 화면
+// 2. "/new" : 새로운 일기를 작성하는 화면
+// 3. "/Diary" : 일기를 상세조회하는 화면
+// 4. "*" : path경로가 맞지않으면 이동하는 화면
 export default function App() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-
+  const [data, dispatch] = useReducer(reducer, mockData);
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <main className="flex-1 p-6 text-center">
-        <h2 className="text-xl font-semibold">회원 가입</h2>
-        <p className="text-gray-600 mb-4">정보를 입력해주세요.</p>
-
-        <div className="max-w-md mx-auto space-y-4">
-          <Input
-            label="이름"
-            placeholder="이름을 입력하세요"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            type="email"
-            label="이메일"
-            placeholder="이메일을 입력하세요"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Button onClick={() => alert(`이름: ${name}, 이메일: ${email}`)}>제출</Button>
-        </div>
-      </main>
-      <Footer />
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/new" element={<New />} />
+        <Route path="/diary/:id" element={<Diary />} />
+        <Route path="/edit/:id" element={<Edit />} />
+        <Route path="*" element={<Notfound />} />
+      </Routes>
+    </>
   );
 }
