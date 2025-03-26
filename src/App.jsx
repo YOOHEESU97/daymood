@@ -9,15 +9,21 @@ import { useReducer, useRef, createContext } from "react";
 const mockData = [
   {
     id: 1,
-    createdDate: new Date().getTime(),
+    createdDate: new Date("2025-03-26").getTime(),
     emotionId: 1,
     content: "1번 일기 내용",
   },
   {
     id: 2,
-    createdDate: new Date().getTime(),
+    createdDate: new Date("2025-03-25").getTime(),
     emotionId: 2,
     content: "2번 일기 내용",
+  },
+  {
+    id: 3,
+    createdDate: new Date("2025-02-03").getTime(),
+    emotionId: 3,
+    content: "3번 일기 내용",
   },
 ];
 
@@ -37,8 +43,8 @@ function reducer(state, action) {
   return state;
 }
 
-const DiaryStateContext = createContext();
-const DiaryDispatchContext = createContext();
+export const DiaryStateContext = createContext();
+export const DiaryDispatchContext = createContext();
 
 // 1. "/" : 모든 일기를 조회하는 화면
 // 2. "/new" : 새로운 일기를 작성하는 화면
@@ -46,7 +52,7 @@ const DiaryDispatchContext = createContext();
 // 4. "*" : path경로가 맞지않으면 이동하는 화면
 export default function App() {
   const [data, dispatch] = useReducer(reducer, mockData);
-  const idRef = useRef(3);
+  const idRef = useRef(4);
 
   // 일기 추가
   const onCreate = (createdDate, emotionId, content) => {
@@ -81,27 +87,6 @@ export default function App() {
   };
   return (
     <>
-      <button
-        onClick={() => {
-          onCreate(new Date().getTime(), 1, "Hello");
-        }}
-      >
-        생성
-      </button>
-      <button
-        onClick={() => {
-          onUpdate(1, new Date().getTime(), 3, "수정된 일기");
-        }}
-      >
-        수정
-      </button>
-      <button
-        onClick={() => {
-          onDelete(1);
-        }}
-      >
-        삭제
-      </button>
       <DiaryStateContext.Provider value={data}>
         <DiaryDispatchContext.Provider value={{ onCreate, onDelete, onUpdate }}>
           <Routes>
